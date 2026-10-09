@@ -1,0 +1,5 @@
+Forked from ../src/game at 82fd288. The decompilation in ../src stays the reference; this copy is made portable (64-bit, host data loading).
+
+The statement above is preserved from upstream. This Web-only package does not include ../src/game.
+82fd288 identifies the game-source fork, not the revision of the entire package.
+Upstream: https://github.com/Y0oshi/lain-psx-decompiled

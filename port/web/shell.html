@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>serial experiments lain - Native Web</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: system-ui, "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+      --ground: #121416;
+      --panel: #1b1e21;
+      --field: #121518;
+      --paper: #e2e3de;
+      --muted: #acb1b5;
+      --line: #41494f;
+      --accent: #a1bfd3;
+      --selected: #283c49;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { min-height: 100%; background: var(--ground); }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--ground);
+      color: var(--paper);
+      line-height: 1.6;
+    }
+    button, select, input { max-width: 100%; font: inherit; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    p, h2, h3, button { overflow-wrap: anywhere; }
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin-inline: auto;
+      padding: 24px 0 32px;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    .site-header {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 24px;
+      padding: 28px 32px 24px;
+      overflow: hidden;
+      background: #dce0db;
+      color: #2e3438;
+    }
+    .header-wires { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .header-wires path { fill: none; stroke: #a2acae; stroke-width: 1; }
+    .header-copy, .readouts { position: relative; min-width: 0; }
+    .language-picker { position: relative; grid-column: 1 / -1; justify-self: end; display: flex; align-items: center; gap: 10px; max-width: 100%; font-size: 12px; }
+    #language-select { width: auto; min-width: 130px; color: #2e3438; background: #edf0eb; border-color: #89969d; }
+    h1 {
+      max-width: 100%;
+      margin: 0;
+      font-family: Georgia, "Yu Mincho", serif;
+      font-size: clamp(64px, 9vw, 104px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -.035em;
+    }
+    h1 span {
+      display: block;
+      margin-bottom: 4px;
+      font-family: "Yu Gothic UI", system-ui, sans-serif;
+      font-size: 12px;
+      line-height: 1.6;
+      letter-spacing: .12em;
+      overflow-wrap: anywhere;
+    }
+    .edition { margin: 12px 0 0; color: #4b575f; font-size: 12px; }
+    .readouts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .readout { min-width: 0; padding-left: 12px; border-left: 1px solid #a2acae; }
+    .readout span { display: block; margin-bottom: 6px; color: #4b575f; font-size: 11px; }
+    .readout strong { font-family: ui-monospace, Consolas, monospace; font-size: 13px; font-weight: 400; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+    .readout strong.online { color: #34566d; }
+    #link-readout:not(.online) { color: #913b38; }
+    .record-index { display: flex; align-items: baseline; gap: 28px; padding: 20px 4px; font-size: 13px; }
+    .record-index p { margin: 0; }
+    .index-label { margin: 0; color: var(--muted); font-size: 11px; letter-spacing: .08em; }
+    .record-index .index-label { flex: 0 0 auto; }
+    .record-index .record-description { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+    button {
+      min-width: 0;
+      min-height: 44px;
+      padding: 10px 16px;
+      margin: 0;
+      color: var(--paper);
+      border: 1px solid #6b7780;
+      border-radius: 2px;
+      background: #262d32;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    button:hover:not(:disabled) { border-color: var(--accent); background: var(--selected); }
+    button:disabled { color: #a0a7ab; border-color: var(--line); background: #252a2e; cursor: not-allowed; }
+    button.primary:not(:disabled), #apply-settings { color: #f0f4f6; border-color: var(--accent); background: var(--selected); }
+    button.secondary { background: transparent; }
+    #play { min-width: 140px; min-height: 48px; }
+    .display-shell { min-width: 0; padding: 20px; border: 1px solid var(--line); background: var(--panel); }
+    .player-toolbar, .launcher, .toolbar, .game-controls, .save-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-width: 0; }
+    .player-toolbar { gap: 12px 16px; }
+    .launcher { gap: 12px; }
+    #settings-toggle { margin-left: auto; }
+    .status-rack {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: baseline;
+      gap: 12px;
+      margin: 16px 0;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .status-label, .display-meta, .control-label { color: var(--muted); font-size: 12px; }
+    #status { margin: 0; color: var(--paper); font-size: 13px; }
+    .display-bar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+    .display-bar h2 { margin: 0; font-size: 13px; font-weight: 400; }
+    .standby-screen, #canvas-screen {
+      position: relative;
+      width: min(100%, calc(76vh * 4 / 3));
+      width: min(100%, calc(76svh * 4 / 3));
+      aspect-ratio: 4 / 3;
+      min-width: 0;
+      min-height: 0;
+      margin-inline: auto;
+      background: #000;
+    }
+    .standby-screen { display: grid; place-items: center; background: var(--field); }
+    .standby-content { padding: 16px; text-align: center; font-size: 13px; }
+    .standby-content p { margin: 20px 0 4px; }
+    .standby-content > span:last-child { color: var(--muted); font-size: 12px; }
+    .standby-rings { display: block; position: relative; width: clamp(56px, 12vw, 128px); aspect-ratio: 1; margin-inline: auto; border: 1px solid #59636b; border-radius: 50%; }
+    .standby-rings::before, .standby-rings::after {
+      content: "";
+      position: absolute;
+      inset: 18%;
+      border: 1px solid #59636b;
+      border-radius: 50%;
+    }
+    .standby-rings::after { inset: 36%; }
+    body.game-booting .standby-screen, body.game-running .standby-screen { display: none; }
+    #canvas-wrap { position: relative; min-width: 0; }
+    #canvas-screen { display: none; overflow: hidden; }
+    #canvas-wrap.preparing #canvas-screen, #canvas-wrap.visible #canvas-screen { display: block; }
+    /* Keep the internal resolution from expanding the page layout. */
+    #canvas {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      background: #000;
+      image-rendering: pixelated;
+    }
+    #canvas:focus, #canvas:focus-visible { outline: none; }
+    #canvas-wrap:fullscreen {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      justify-items: center;
+      gap: 8px;
+      width: 100vw;
+      height: 100vh;
+      width: 100dvw;
+      height: 100dvh;
+      margin: 0;
+      padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+      aspect-ratio: auto;
+      overflow: auto;
+      background: #000;
+    }
+    #canvas-wrap:fullscreen #canvas-screen {
+      grid-row: 2;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+      container-type: size;
+    }
+    #canvas-wrap:fullscreen #canvas {
+      width: min(100%, calc(100cqh * 4 / 3));
+      height: min(100%, calc(100cqw * 3 / 4));
+      margin: auto;
+      object-fit: contain;
+    }
+    #capture-help {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      bottom: max(12px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: calc(100% - 24px);
+      margin: 0;
+      padding: 8px 12px;
+      border: 1px solid var(--accent);
+      background: #192127;
+      color: #f0f4f6;
+      font-size: 13px;
+      text-align: center;
+      pointer-events: none;
+    }
+    #unlock-input {
+      grid-row: 1;
+      justify-self: end;
+      border-color: var(--accent);
+      background: #192127;
+      color: #f0f4f6;
+    }
+    #canvas-wrap:not(:fullscreen) #unlock-input { display: none; }
+    .game-controls { margin-top: 18px; }
+    #capture-status { margin-left: auto; color: var(--muted); font-size: 12px; }
+    body.pointer-locked #capture-status { color: var(--accent); }
+    .note { margin: 10px 0 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
+    .save-controls { margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .control-label { margin-right: auto; }
+    .panel { margin-top: 20px; padding: 24px; border: 1px solid var(--line); background: var(--panel); }
+    .panel-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+    .panel-heading h2 { margin: 4px 0 0; font-size: 20px; font-weight: 400; }
+    .module-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 16px; }
+    .subpanel { min-width: 0; margin: 0; padding: 16px; border: 1px solid var(--line); }
+    .subpanel legend { padding: 0 8px; color: var(--paper); font-size: 13px; }
+    .settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .field { display: grid; gap: 8px; min-width: 0; color: var(--paper); font-size: 13px; }
+    select, input[type=range] { width: 100%; min-width: 0; min-height: 44px; }
+    select { padding: 8px; color: var(--paper); border: 1px solid #6b7780; border-radius: 2px; background: var(--field); }
+    select:hover { border-color: var(--accent); }
+    input[type=range], input[type=checkbox] { accent-color: var(--accent); }
+    input[type=checkbox] { flex: 0 0 auto; width: 18px; height: 18px; margin: 2px 0 0; }
+    #volume-value { margin-left: 8px; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .toggles { display: grid; gap: 8px; }
+    .toggle { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; padding-block: 10px; color: var(--paper); font-size: 13px; }
+    .keys-module { margin-top: 20px; }
+    .key-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 8px 16px; margin-top: 14px; }
+    .key-bind { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
+    .key-bind span { min-width: 0; overflow-wrap: anywhere; }
+    .key-bind button { min-width: 80px; padding: 8px; font-size: 12px; }
+    .key-bind button.waiting { color: #f0f4f6; border-color: var(--accent); background: var(--selected); }
+    .settings-actions { margin-top: 20px; }
+    .setting-state { margin-left: auto; color: var(--accent); font-size: 12px; }
+    .site-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; margin-top: 28px; padding: 16px 4px 0; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+    .site-footer a { color: var(--accent); }
+    @media (max-width: 760px) {
+      main { width: calc(100% - 20px); padding-top: 10px; }
+      .site-header { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 20px; }
+      .readouts { max-width: 320px; }
+      .record-index { gap: 16px; }
+      .display-shell, .panel { padding: 14px; }
+      .module-grid { grid-template-columns: minmax(0, 1fr); }
+      #capture-status { flex-basis: 100%; margin-left: 0; }
+      .control-label { flex-basis: 100%; }
+    }
+    @media (max-width: 420px) {
+      .settings-grid { grid-template-columns: minmax(0, 1fr); }
+      .record-index { flex-direction: column; gap: 6px; }
+      .game-controls > button, .save-controls > button { flex: 1 1 100%; }
+      .setting-state { flex-basis: 100%; margin-left: 0; }
+    }
+    @media (max-height: 480px) {
+      .standby-rings { display: none; }
+      .standby-content p { margin-top: 0; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header class="site-header">
+    <svg class="header-wires" viewBox="0 0 1180 240" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path d="M-40 8 Q480 110 1220 18 M-40 24 Q480 128 1220 36 M-40 40 Q480 146 1220 54"/>
+      <path d="M858 0 L858 240 M850 0 L850 240 M792 54 L920 54 M812 72 L900 72"/>
+    </svg>
+    <label class="language-picker" for="language-select">
+      <span data-i18n="language">Language</span>
+      <select id="language-select">
+        <option value="en" lang="en" data-i18n="language.en">English</option>
+        <option value="ja" lang="ja" data-i18n="language.ja">Japanese</option>
+        <option value="ko" lang="ko" data-i18n="language.ko">Korean</option>
+      </select>
+    </label>
+    <div class="header-copy">
+      <h1 lang="en"><span>serial experiments</span>lain</h1>
+      <p class="edition" data-i18n="edition">PlayStation edition / Browser port</p>
+    </div>
+    <div class="readouts" aria-label="Runtime information" data-i18n-aria="runtime.label">
+      <div class="readout"><span data-i18n="link.label">Runtime / LINK</span><strong id="link-readout" class="online">Preparing</strong></div>
+      <div class="readout"><span data-i18n="clock.label">Local time</span><strong id="clock-readout">--:--:--</strong></div>
+    </div>
+  </header>
+
+  <aside class="record-index" aria-label="About the game" data-i18n-aria="about.label">
+    <p class="index-label" data-i18n="records.title">Record index</p>
+    <p><span data-i18n="records.kinds">Diaries / Clinical records / Fragments of voices</span><span class="record-description" data-i18n="records.description">Explore a story distinct from the anime through the records of the PS1 game.</span></p>
+  </aside>
+
+  <section class="display-shell" aria-label="Game screen and controls" data-i18n-aria="player.label">
+    <div class="player-toolbar">
+      <div id="launcher" class="launcher">
+        <button id="play" type="button" class="primary" data-i18n="play" disabled>Play</button>
+      </div>
+      <button id="settings-toggle" type="button" class="secondary" aria-controls="settings-panel" aria-expanded="false">Open settings</button>
+    </div>
+    <div class="status-rack">
+      <span class="status-label" data-i18n="status.label">Status</span>
+      <p id="status" role="status" aria-live="polite" aria-atomic="true">Loading WebAssembly…</p>
+    </div>
+    <div class="display-bar"><h2 data-i18n="monitor">Game monitor</h2><span class="display-meta">PS1 / 4:3</span></div>
+    <div class="standby-screen">
+      <div class="standby-content">
+        <span class="standby-rings" aria-hidden="true"></span>
+        <p data-i18n="standby.title">Before opening the records</p>
+        <span data-i18n="standby.action">Select Play to begin</span>
+      </div>
+    </div>
+    <div id="canvas-wrap">
+      <div id="canvas-screen">
+        <canvas id="canvas" oncontextmenu="event.preventDefault()" tabindex="0" aria-label="Lain game screen" data-i18n-aria="canvas.label" data-i18n="canvas.fallback" aria-describedby="capture-hint">A browser with WebGL 2 support is required to display the game.</canvas>
+        <p id="capture-help" data-i18n="capture.help" hidden>Mouse locked / Esc to release</p>
+      </div>
+      <button id="unlock-input" type="button" data-i18n="capture.unlockAll" hidden>Exit fullscreen and release input</button>
+    </div>
+    <div class="game-controls" role="group" aria-label="Game controls" data-i18n-aria="controls.label">
+      <button id="input-lock" type="button" aria-describedby="capture-hint" disabled>Lock mouse</button>
+      <button id="focus-game" type="button" class="secondary" data-i18n="capture.focus" disabled>Keyboard controls</button>
+      <button id="fullscreen-toggle" type="button" class="secondary" aria-controls="canvas-wrap" disabled>Fullscreen</button>
+      <span id="capture-status" role="status" aria-live="polite" aria-atomic="true">Mouse lock: Off</span>
+    </div>
+    <p id="capture-hint" class="note">Click the game screen with a mouse to lock it; press Esc to release input. Use assigned keys or a gamepad to play.</p>
+    <p class="note" data-i18n="capture.keyboardNote">Mouse lock and fullscreen are separate and optional. In supported browsers, Keyboard controls or mouse lock can also enable Keyboard Lock in fullscreen. OS shortcuts cannot be blocked; Esc releases input.</p>
+    <div class="save-controls" role="group" aria-label="Save data" data-i18n-aria="save.label">
+      <span class="control-label" data-i18n="save.card">Memory card</span>
+      <button id="save-export" type="button" data-i18n="save.export" disabled>Export save</button>
+      <button id="save-import-button" type="button" data-i18n="save.import" disabled>Import save</button>
+      <input id="save-import" type="file" accept=".mcd,.mcr,application/octet-stream" aria-label="Choose a memory card file" data-i18n-aria="save.fileLabel" hidden>
+    </div>
+    <p id="save-status" class="note" role="status" aria-live="polite" aria-atomic="true">Restoring the browser save…</p>
+    <p class="note" data-i18n="save.hint">Import and Export are available before starting the game. Wait for the import to finish saving, select Play, then choose Load in the game menu.</p>
+  </section>
+
+  <section id="settings-panel" class="panel" aria-labelledby="settings-heading" hidden>
+    <div class="panel-heading">
+      <div><p class="index-label" data-i18n="settings.sections">Display / Audio / Controls</p><h2 id="settings-heading" tabindex="-1" data-i18n="settings.title">Settings</h2></div>
+      <button id="settings-close" type="button" class="secondary" data-i18n="settings.close">Close settings</button>
+    </div>
+    <div class="module-grid">
+      <fieldset class="subpanel">
+        <legend data-i18n="settings.av">Video and volume</legend>
+        <div class="settings-grid">
+          <label class="field" for="output-resolution"><span data-i18n="settings.outputResolution">Output resolution</span>
+            <select id="output-resolution">
+              <option value="640x480">640 × 480</option>
+              <option value="960x720">960 × 720</option>
+              <option value="1280x960">1280 × 960</option>
+              <option value="1600x1200">1600 × 1200</option>
+              <option value="1920x1440">1920 × 1440</option>
+            </select>
+          </label>
+          <label class="field" for="render-scale"><span data-i18n="settings.renderScale">Internal resolution</span>
+            <select id="render-scale">
+              <option value="0" data-i18n="settings.auto">Auto (output resolution)</option>
+              <option value="1">1× (320 × 240)</option>
+              <option value="2">2× (640 × 480)</option>
+              <option value="3">3× (960 × 720)</option>
+              <option value="4">4× (1280 × 960)</option>
+              <option value="6">6× (1920 × 1440)</option>
+              <option value="8">8× (2560 × 1920)</option>
+            </select>
+          </label>
+          <label class="field" for="output-filter"><span data-i18n="settings.outputFilter">Output scaling filter</span>
+            <select id="output-filter">
+              <option value="pixelated" data-i18n="settings.pixelated">Sharp</option>
+              <option value="smooth" data-i18n="settings.smooth">Smooth</option>
+            </select>
+          </label>
+          <label class="field" for="volume"><span><span data-i18n="settings.volume">Volume</span> <span id="volume-value">100%</span></span>
+            <input id="volume" type="range" min="0" max="100" step="1" value="100">
+          </label>
+        </div>
+      </fieldset>
+      <fieldset class="subpanel">
+        <legend data-i18n="settings.graphics">Rendering and input</legend>
+        <div class="toggles">
+          <label class="toggle"><input id="bilinear" type="checkbox"> <span data-i18n="settings.bilinear">Filter PS1 textures</span></label>
+          <label class="toggle"><input id="interpolate" type="checkbox"> <span data-i18n="settings.interpolate">60 Hz frame interpolation</span></label>
+          <label class="toggle"><input id="prevent-browser-keys" type="checkbox" checked> <span data-i18n="settings.preventKeys">Suppress browser shortcuts while playing</span></label>
+        </div>
+        <p class="note" data-i18n="settings.renderNote">Rendering settings apply at the next frame boundary. The browser compositor manages VSync.</p>
+      </fieldset>
+    </div>
+    <fieldset class="subpanel keys-module">
+      <legend data-i18n="settings.bindings">Key bindings</legend>
+      <p class="note" data-i18n="settings.bindingsHint">Select an action, then press the key to assign. Press Esc to cancel an assignment.</p>
+      <div id="key-grid" class="key-grid"></div>
+    </fieldset>
+    <div class="toolbar settings-actions">
+      <button id="apply-settings" type="button" data-i18n="settings.apply">Apply settings</button>
+      <button id="reset-graphics" type="button" class="secondary" data-i18n="settings.resetGraphics">Reset display settings</button>
+      <button id="reset-keys" type="button" class="secondary" data-i18n="settings.resetKeys">Reset key bindings</button>
+      <span id="setting-state" class="setting-state" role="status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <span lang="en">serial experiments lain</span>
+    <span data-i18n="footer">Browser port / WebAssembly / WebGL 2</span>
+    <a href="./README.md" target="_blank" rel="noopener" data-i18n="legal.notices">Licenses and credits</a>
+    <a href="./sources/port/psx/src/psx/LIBGPU.C" download data-i18n="legal.gpuSource">MPL source: LIBGPU.C</a>
+    <a href="./sources/port/psx/src/gpu/font.h" download data-i18n="legal.fontSource">MPL source: font.h</a>
+  </footer>
+</main>
+<script id="ui-translations" type="application/json">__LAIN_TRANSLATIONS__</script>
+<script>
+  const defaultConfig = { roms: { disc1: './rom/disc1.bin', disc2: './rom/disc2.bin' } };
+  const $ = id => document.getElementById(id);
+  const canvas = $('canvas');
+  const canvasWrap = $('canvas-wrap');
+  const SETTINGS_KEY = 'lain.native.web.settings.v1';
+  const UI_KEY = 'lain.native.web.ui.v1';
+  const LANGUAGE_KEY = 'lain.native.web.language.v1';
+  const translations = JSON.parse($('ui-translations').textContent);
+  let language = 'en';
+  try {
+    const saved = localStorage.getItem(LANGUAGE_KEY);
+    if (['en', 'ja', 'ko'].includes(saved)) language = saved;
+  } catch { /* Default to English if storage is unavailable; changes still apply in this tab. */ }
+  const message = (key, params = {}) => ({ i18nKey: key, i18nParams: params });
+  function messageText(value) {
+    return value?.i18nKey ? t(value.i18nKey, value.i18nParams) : String(value?.message ?? value ?? '');
+  }
+  function t(key, params = {}) {
+    return translations[language][key].replace(/\{(\w+)\}/g, (_, name) => messageText(params[name]));
+  }
+  function localizedError(key, params = {}) {
+    return Object.assign(new Error(t(key, params)), message(key, params));
+  }
+  const DEFAULT_KEYS = [82, 81, 80, 79, 6, 25, 27, 29, 225, 224, 47, 229, 228, 48, 40, 44];
+  const KEY_ACTIONS = [
+    ['↑', 'binding.up'], ['↓', 'binding.down'], ['←', 'binding.left'], ['→', 'binding.right'],
+    ['×', 'binding.cross'], ['○', 'binding.circle'], ['□', 'binding.square'], ['△', 'binding.triangle'],
+    ['L1', 'L1'], ['L2', 'L2'], ['L3', 'L3'], ['R1', 'R1'], ['R2', 'R2'], ['R3', 'R3'],
+    ['START', 'binding.start'], ['SELECT', 'binding.select']
+  ];
+  const codeToScancode = {};
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach((letter, index) => codeToScancode[`Key${letter}`] = 4 + index);
+  ['Digit1','Digit2','Digit3','Digit4','Digit5','Digit6','Digit7','Digit8','Digit9','Digit0']
+    .forEach((code, index) => codeToScancode[code] = 30 + index);
+  Object.assign(codeToScancode, {
+    Enter:40, Escape:41, Backspace:42, Tab:43, Space:44, Minus:45, Equal:46,
+    BracketLeft:47, BracketRight:48, Backslash:49, Semicolon:51, Quote:52,
+    Backquote:53, Comma:54, Period:55, Slash:56, CapsLock:57,
+    PrintScreen:70, ScrollLock:71, Pause:72, Insert:73, Home:74, PageUp:75,
+    Delete:76, End:77, PageDown:78, ArrowRight:79, ArrowLeft:80,
+    ArrowDown:81, ArrowUp:82, NumLock:83, NumpadDivide:84, NumpadMultiply:85,
+    NumpadSubtract:86, NumpadAdd:87, NumpadEnter:88, NumpadDecimal:99,
+    ControlLeft:224, ShiftLeft:225, AltLeft:226, MetaLeft:227,
+    ControlRight:228, ShiftRight:229, AltRight:230, MetaRight:231
+  });
+  for (let i = 1; i <= 12; i++) codeToScancode[`F${i}`] = 57 + i;
+  for (let i = 1; i <= 9; i++) codeToScancode[`Numpad${i}`] = 88 + i;
+  codeToScancode.Numpad0 = 98;
+  const scancodeToCode = Object.fromEntries(Object.entries(codeToScancode).map(([code, scan]) => [scan, code]));
+  const friendlyCode = code => ({
+    ArrowUp:'↑', ArrowDown:'↓', ArrowLeft:'←', ArrowRight:'→',
+    ShiftLeft:t('key.leftShift'), ShiftRight:t('key.rightShift'), ControlLeft:t('key.leftCtrl'),
+    ControlRight:t('key.rightCtrl'), AltLeft:t('key.leftAlt'), AltRight:t('key.rightAlt'),
+    BracketLeft:'[', BracketRight:']', Space:'Space', Enter:'Enter'
+  }[code] || code?.replace(/^Key/, '').replace(/^Digit/, '') || t('key.unknown'));
+  const defaults = {
+    width: 960, height: 720, renderScale: 0, bilinear: false, interpolate: false,
+    outputFilter: 'pixelated', volume: 100, preventBrowserKeys: true,
+    keys: [...DEFAULT_KEYS]
+  };
+  function loadSettings() {
+    const settings = { ...defaults, keys: [...DEFAULT_KEYS] };
+    try {
+      const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY));
+      if (!saved || typeof saved !== 'object') return settings;
+      if ([...$('output-resolution').options].some(option => option.value === `${saved.width}x${saved.height}`)) {
+        settings.width = Number(saved.width);
+        settings.height = Number(saved.height);
+      }
+      if ([...$('render-scale').options].some(option => option.value === String(saved.renderScale)))
+        settings.renderScale = Number(saved.renderScale);
+      if (['pixelated', 'smooth'].includes(saved.outputFilter)) settings.outputFilter = saved.outputFilter;
+      if (Number.isInteger(saved.volume) && saved.volume >= 0 && saved.volume <= 100) settings.volume = saved.volume;
+      for (const key of ['bilinear', 'interpolate', 'preventBrowserKeys'])
+        if (typeof saved[key] === 'boolean') settings[key] = saved[key];
+      if (Array.isArray(saved.keys) && saved.keys.length === 16) {
+        settings.keys = saved.keys.map((scan, index) =>
+          Number.isInteger(scan) && Object.hasOwn(scancodeToCode, scan) && scan !== 41 ? scan : DEFAULT_KEYS[index]);
+      }
+    } catch { /* Settings remain usable in this tab when storage is unavailable. */ }
+    return settings;
+  }
+  let appSettings = loadSettings();
+  let runtimeReady = false;
+  let runtimeFailed = false;
+  let runtimeStartupTimer = 0;
+  let starting = false;
+  let gameStarted = false;
+  let saveImportBusy = false;
+  let saveState = { ready: false, hasCard: false, saving: false, importing: false, error: '' };
+  let inputActive = false;
+  let captureWanted = false;
+  let pointerRequestPending = false;
+  let pointerRequestId = 0;
+  let pointerError = null;
+  let pointerWasLocked = false;
+  let captureHelpVisible = false;
+  let captureHelpTimer = 0;
+  let keyboardLocked = false;
+  let keyboardRequestPending = false;
+  let keyboardEpoch = 0;
+  let fullscreenBusy = false;
+  let fullscreenEpoch = 0;
+  let bindingIndex = null;
+  let suppressBindingCode = null;
+  let roms = [defaultConfig.roms.disc1, defaultConfig.roms.disc2];
+  const romConfigReady = fetch('./config.json', { cache: 'no-store' }).then(response => response.ok ? response.json() : null).then(config => {
+    if (!config?.roms) return;
+    roms = [config.roms.disc1 || roms[0], config.roms.disc2 || roms[1]];
+  }).catch(() => {});
+  let statusMessage = message('boot.loadingWasm');
+  let runtimeError = null;
+  let fatalRuntimeStatus = null;
+  let settingStateKey = '';
+  function setStatus(value, params = {}) {
+    if (fatalRuntimeStatus) value = fatalRuntimeStatus;
+    statusMessage = typeof value === 'string' && Object.hasOwn(translations.en, value)
+      ? message(value, params) : value?.i18nKey ? value : message('error.operation', { detail: value });
+    $('status').textContent = messageText(statusMessage);
+  }
+  function setSettingState(key) {
+    settingStateKey = key;
+    $('setting-state').textContent = t(key);
+  }
+  const pointerIsLocked = () => document.pointerLockElement === canvas;
+  const ownsFullscreen = () => document.fullscreenElement === canvasWrap;
+
+  function updateSaveUI() {
+    const busy = saveImportBusy || saveState.saving || saveState.importing;
+    const usable = runtimeReady && !runtimeFailed && saveState.ready;
+    $('play').disabled = !usable || starting || gameStarted || busy || !!saveState.error;
+    $('save-import-button').disabled = !usable || starting || busy;
+    // Allow a complete card to be exported even after a runtime or storage failure.
+    $('save-export').disabled = !saveState.hasCard || busy;
+    $('save-status').textContent = saveState.error ? messageText(saveState.error) : t(
+      saveState.saving ? 'save.saving' : saveState.importing ? 'save.waitingImport' :
+      saveImportBusy ? 'save.readingImport' : !saveState.ready ? (runtimeFailed ? 'save.unavailable' : 'save.restoring') :
+      saveState.hasCard ? 'save.saved' : 'save.empty');
+  }
+
+  function updateLink() {
+    $('link-readout').textContent = t(runtimeFailed ? 'link.stopped' : gameStarted ? 'link.running' : starting ? 'link.loading' : runtimeReady ? 'link.ready' : 'link.preparing');
+    $('link-readout').classList.toggle('online', !runtimeFailed);
+  }
+  const updateClock = () => {
+    const now = new Date();
+    $('clock-readout').textContent = now.toLocaleTimeString(language === 'en' ? 'en-GB' : language, { hour12: false });
+  };
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  function renderKeyBindings() {
+    $('key-grid').replaceChildren(...KEY_ACTIONS.map(([short, key], index) => {
+      const label = key.startsWith('binding.') ? t(key) : key;
+      const row = document.createElement('div');
+      row.className = 'key-bind';
+      const name = document.createElement('span');
+      name.textContent = short === label ? label : `${short}  ${label}`;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.binding = index;
+      button.className = bindingIndex === index ? 'waiting' : '';
+      button.textContent = bindingIndex === index ? t('binding.wait') : friendlyCode(scancodeToCode[appSettings.keys[index]]);
+      button.setAttribute('aria-label', t('binding.aria', { action: label, key: button.textContent }));
+      button.onclick = () => {
+        releaseGameInput();
+        bindingIndex = index;
+        renderKeyBindings();
+        $('key-grid').querySelector(`[data-binding="${index}"]`).focus({ preventScroll: true });
+      };
+      row.append(name, button);
+      return row;
+    }));
+  }
+
+  function syncSettingsUI() {
+    $('output-resolution').value = `${appSettings.width}x${appSettings.height}`;
+    $('render-scale').value = String(appSettings.renderScale);
+    $('output-filter').value = appSettings.outputFilter;
+    $('bilinear').checked = appSettings.bilinear;
+    $('interpolate').checked = appSettings.interpolate;
+    $('prevent-browser-keys').checked = appSettings.preventBrowserKeys;
+    $('volume').value = String(appSettings.volume);
+    $('volume-value').textContent = `${appSettings.volume}%`;
+    renderKeyBindings();
+    applyOutputFilter();
+  }
+
+  function readSettingsUI() {
+    const [width, height] = $('output-resolution').value.split('x').map(Number);
+    appSettings = {
+      ...appSettings,
+      width, height,
+      renderScale: Number($('render-scale').value),
+      outputFilter: $('output-filter').value,
+      bilinear: $('bilinear').checked,
+      interpolate: $('interpolate').checked,
+      preventBrowserKeys: $('prevent-browser-keys').checked,
+      volume: Number($('volume').value)
+    };
+  }
+
+  function applyOutputFilter() {
+    $('canvas').style.imageRendering = appSettings.outputFilter === 'smooth' ? 'auto' : 'pixelated';
+  }
+
+  function saveAndApplySettings(showStatus = true) {
+    readSettingsUI();
+    Module.lainSettings = appSettings;
+    applyOutputFilter();
+    if (gameStarted && !Module.lainApplySettings(appSettings)) {
+      setSettingState('settings.wait');
+      return false;
+    }
+    try {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(appSettings));
+      setSettingState(gameStarted ? 'settings.savedRunning' : 'settings.savedStartup');
+    } catch {
+      setSettingState('settings.sessionOnly');
+    }
+    if (!appSettings.preventBrowserKeys) unlockKeyboard();
+    if (showStatus) setStatus('settings.applied');
+    return true;
+  }
+
+  function setSettingsVisible(visible, moveFocus = true, remember = true) {
+    bindingIndex = null;
+    suppressBindingCode = null;
+    renderKeyBindings();
+    if (visible) releaseGameInput();
+    $('settings-panel').hidden = !visible;
+    $('settings-toggle').setAttribute('aria-expanded', String(visible));
+    $('settings-toggle').textContent = t(visible ? 'settings.hide' : 'settings.open');
+    if (remember) {
+      try { localStorage.setItem(UI_KEY, JSON.stringify({ settingsHidden: !visible })); } catch {}
+    }
+    if (moveFocus) (visible ? $('settings-heading') : $('settings-toggle')).focus({ preventScroll: !visible });
+  }
+  $('settings-toggle').onclick = () => setSettingsVisible($('settings-panel').hidden);
+  $('settings-close').onclick = () => setSettingsVisible(false);
+
+  $('volume').oninput = () => $('volume-value').textContent = `${$('volume').value}%`;
+  $('apply-settings').onclick = () => saveAndApplySettings();
+  $('reset-graphics').onclick = () => {
+    appSettings = { ...appSettings, ...defaults, keys: [...appSettings.keys] };
+    syncSettingsUI();
+    saveAndApplySettings();
+  };
+  $('reset-keys').onclick = () => {
+    appSettings.keys = [...DEFAULT_KEYS];
+    bindingIndex = null;
+    renderKeyBindings();
+    saveAndApplySettings();
+  };
+
+  async function probe(url) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch(url, { headers: { Range: 'bytes=0-0' }, cache: 'no-store', signal: controller.signal });
+      if (response.status !== 206) {
+        await response.body?.cancel();
+        throw localizedError('boot.rangeRequired', { url });
+      }
+      const match = /^bytes 0-0\/(\d+)$/.exec(response.headers.get('Content-Range') || '');
+      const size = Number(match?.[1]);
+      if (!Number.isSafeInteger(size) || size <= 0 || size > 0xffffffff || size % 2352 !== 0) {
+        await response.body?.cancel();
+        throw localizedError('boot.rawRequired', { url });
+      }
+      if ((await response.arrayBuffer()).byteLength !== 1) throw localizedError('boot.probeSize');
+      return size;
+    } finally { clearTimeout(timer); }
+  }
+
+  $('play').onclick = async () => {
+    if (!runtimeReady || runtimeFailed || starting || gameStarted || !saveState.ready ||
+        saveImportBusy || saveState.saving || saveState.importing || saveState.error) return;
+    starting = true;
+    updateSaveUI();
+    try {
+      saveAndApplySettings(false);
+      // Prepare and resume audio during the Play gesture, before any network awaits.
+      Module.lainPrepare(appSettings);
+      Module.lainResumeAudio();
+      if (runtimeFailed) return;
+      setSettingsVisible(false, false, false);
+      document.body.classList.add('game-booting');
+      updateLink();
+      setStatus('boot.probing');
+      await romConfigReady;
+      if (runtimeFailed) return;
+      const urls = roms.map(path => {
+        const url = new URL(path, document.baseURI);
+        if (!['http:', 'https:'].includes(url.protocol)) throw localizedError('boot.protocol');
+        return url.href;
+      });
+      const sizes = await Promise.all(urls.map(probe));
+      if (runtimeFailed) return;
+      Module.lainConfig = { roms: urls, sizes };
+      Module.lainStart();
+    } catch (error) {
+      starting = false;
+      document.body.classList.remove('game-booting');
+      canvasWrap.classList.remove('preparing');
+      updateLink();
+      setStatus(error);
+      updateSaveUI();
+    }
+  };
+
+  $('save-export').onclick = () => {
+    try {
+      Module.lainExportSave();
+      setStatus('save.exported');
+    }
+    catch (error) { setStatus(error); }
+  };
+  $('save-import-button').onclick = () => {
+    if ($('save-import-button').disabled) return;
+    releaseGameInput();
+    $('save-import').click();
+  };
+  $('save-import').onchange = async event => {
+    const file = event.target.files[0];
+    event.target.value = '';
+    if (!file) return;
+    if (!runtimeReady || runtimeFailed || starting || !saveState.ready ||
+        saveImportBusy || saveState.saving || saveState.importing)
+      return setStatus('save.importDuringBoot');
+    if (file.size !== 128 * 1024) return setStatus('save.importSize');
+    saveImportBusy = true;
+    releaseGameInput();
+    updateSaveUI();
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      if (runtimeFailed) throw localizedError('save.importAfterStop');
+      await Module.lainImportSave(bytes);
+      setStatus(gameStarted ? 'save.importedRunning' : 'save.importedBefore');
+    } catch (error) {
+      setStatus(error);
+    } finally {
+      saveImportBusy = false;
+      updateSaveUI();
+    }
+  };
+
+  function setGameInputActive(active) {
+    active = !!active && gameStarted && !runtimeFailed && !document.hidden && document.hasFocus();
+    if (active && inputActive) return;
+    inputActive = active;
+    if (runtimeReady && !runtimeFailed) Module._lain_web_set_input_active(active ? 1 : 0);
+  }
+
+  function updateCaptureUI() {
+    const locked = pointerIsLocked();
+    document.body.classList.toggle('pointer-locked', locked);
+    $('input-lock').disabled = !gameStarted || runtimeFailed || pointerRequestPending || !canvas.requestPointerLock;
+    $('input-lock').textContent = t(locked ? 'capture.unlock' : pointerRequestPending ? 'capture.requesting' : 'capture.lock');
+    $('input-lock').setAttribute('aria-pressed', String(locked));
+    $('capture-status').textContent = t('capture.status', {
+      pointer: t(locked ? 'capture.on' : pointerRequestPending ? 'capture.pending' : 'capture.off'),
+      keyboard: t(keyboardLocked ? 'capture.on' : 'capture.off')
+    });
+    $('capture-help').hidden = !locked || !captureHelpVisible;
+    $('unlock-input').hidden = !ownsFullscreen() || locked;
+    $('fullscreen-toggle').textContent = t(ownsFullscreen() ? 'capture.exitFullscreen' : 'capture.fullscreen');
+    $('fullscreen-toggle').disabled = !gameStarted || runtimeFailed || fullscreenBusy || !canvasWrap.requestFullscreen;
+  }
+
+  function unlockKeyboard() {
+    keyboardEpoch++;
+    keyboardRequestPending = false;
+    navigator.keyboard?.unlock?.();
+    keyboardLocked = false;
+    updateCaptureUI();
+  }
+
+  async function requestKeyboardLock() {
+    if (!gameStarted || runtimeFailed || !inputActive || !ownsFullscreen() || !appSettings.preventBrowserKeys || keyboardLocked || keyboardRequestPending) return;
+    if (!navigator.keyboard?.lock) {
+      setStatus('capture.keyboardUnsupported');
+      return;
+    }
+    const epoch = ++keyboardEpoch;
+    keyboardRequestPending = true;
+    try {
+      // Leave Esc to the browser's unlock action. OS-reserved shortcuts cannot be captured.
+      await navigator.keyboard.lock(Object.keys(codeToScancode).filter(code => code !== 'Escape'));
+      if (epoch !== keyboardEpoch) {
+        if (!keyboardRequestPending && !keyboardLocked) navigator.keyboard.unlock();
+        return;
+      }
+      if (!ownsFullscreen() || runtimeFailed || !inputActive || !document.hasFocus() || document.hidden) {
+        unlockKeyboard();
+        return;
+      }
+      keyboardLocked = true;
+    } catch (error) {
+      if (epoch === keyboardEpoch) {
+        keyboardLocked = false;
+        setStatus('capture.keyboardDenied', { detail: error });
+      }
+    } finally {
+      if (epoch === keyboardEpoch) keyboardRequestPending = false;
+      updateCaptureUI();
+    }
+  }
+
+  function releaseGameInput() {
+    fullscreenEpoch++;
+    captureWanted = false;
+    clearTimeout(captureHelpTimer);
+    captureHelpTimer = 0;
+    captureHelpVisible = false;
+    unlockKeyboard();
+    if (pointerIsLocked()) document.exitPointerLock();
+    setGameInputActive(false);
+    if (document.activeElement === canvas) canvas.blur();
+    updateCaptureUI();
+  }
+
+  function pointerLockFailed(error) {
+    if (!captureWanted && !pointerRequestPending) return;
+    const wanted = captureWanted;
+    captureWanted = false;
+    pointerRequestPending = false;
+    unlockKeyboard();
+    setGameInputActive(document.activeElement === canvas);
+    if (wanted) setStatus('capture.pointerFailed', { detail: error || '' });
+    updateCaptureUI();
+  }
+
+  function requestGamePointerLock() {
+    if (!gameStarted || runtimeFailed || document.hidden || pointerRequestPending || pointerIsLocked()) return;
+    if (!canvas.requestPointerLock) {
+      setStatus('capture.pointerUnsupported');
+      return;
+    }
+    cancelBinding();
+    Module.lainResumeAudio();
+    canvas.focus({ preventScroll: true });
+    setGameInputActive(true);
+    captureWanted = true;
+    pointerRequestPending = true;
+    pointerError = null;
+    const requestId = ++pointerRequestId;
+    updateCaptureUI();
+    try {
+      // Confirm success from pointerlockchange and the actual locked element, not the Promise.
+      const request = canvas.requestPointerLock();
+      if (request?.catch) request.catch(error => {
+        if (requestId === pointerRequestId && pointerRequestPending) pointerError = error;
+      });
+      requestKeyboardLock();
+    } catch (error) { pointerLockFailed(error); }
+  }
+
+  document.addEventListener('pointerlockchange', () => {
+    const locked = pointerIsLocked();
+    if (locked) pointerRequestPending = false;
+    if (locked && (!captureWanted || !gameStarted || runtimeFailed || document.hidden)) {
+      document.exitPointerLock();
+      updateCaptureUI();
+      return;
+    }
+    if (locked) {
+      if (!pointerWasLocked) {
+        clearTimeout(captureHelpTimer);
+        captureHelpVisible = true;
+        captureHelpTimer = setTimeout(() => {
+          captureHelpVisible = false;
+          captureHelpTimer = 0;
+          $('capture-help').hidden = true;
+        }, 3000);
+      }
+      pointerWasLocked = true;
+      pointerRequestPending = false;
+      canvas.focus({ preventScroll: true });
+      setGameInputActive(true);
+    } else if (pointerWasLocked) {
+      pointerWasLocked = false;
+      releaseGameInput();
+      if (!runtimeFailed) setStatus('capture.released');
+    }
+    updateCaptureUI();
+  });
+  document.addEventListener('pointerlockerror', () => pointerLockFailed(pointerError));
+
+  function cancelBinding() {
+    if (bindingIndex === null && suppressBindingCode === null) return;
+    bindingIndex = null;
+    suppressBindingCode = null;
+    renderKeyBindings();
+  }
+
+  async function toggleFullscreen(event) {
+    if (fullscreenBusy || (!ownsFullscreen() && (!gameStarted || runtimeFailed))) return;
+    if (gameStarted && !runtimeFailed) Module.lainResumeAudio();
+    fullscreenBusy = true;
+    updateCaptureUI();
+    try {
+      if (ownsFullscreen()) {
+        releaseGameInput();
+        await document.exitFullscreen();
+      } else {
+        cancelBinding();
+        const epoch = ++fullscreenEpoch;
+        await canvasWrap.requestFullscreen({ navigationUI: 'hide' });
+        if (epoch !== fullscreenEpoch || runtimeFailed || document.hidden) {
+          if (ownsFullscreen()) await document.exitFullscreen();
+          return;
+        }
+        canvas.focus({ preventScroll: true });
+        setGameInputActive(true);
+        if (event?.pointerType === 'mouse' || (event?.detail === 0 && !event?.pointerType))
+          await requestKeyboardLock();
+      }
+    } catch (error) {
+      setStatus('capture.fullscreenFailed', { detail: error });
+    } finally {
+      fullscreenBusy = false;
+      updateCaptureUI();
+    }
+  }
+
+  $('input-lock').onclick = event => {
+    if (pointerIsLocked()) releaseGameInput();
+    else if (event.pointerType === 'mouse' || (event.detail === 0 && !event.pointerType))
+      requestGamePointerLock();
+  };
+  $('unlock-input').onclick = toggleFullscreen;
+  $('fullscreen-toggle').onclick = toggleFullscreen;
+  $('focus-game').onclick = () => {
+    if (!gameStarted || runtimeFailed) return;
+    Module.lainResumeAudio();
+    releaseGameInput();
+    cancelBinding();
+    canvas.focus({ preventScroll: true });
+    setGameInputActive(true);
+    requestKeyboardLock();
+  };
+  canvas.addEventListener('pointerdown', event => {
+    if (!gameStarted || runtimeFailed || event.button !== 0) return;
+    event.preventDefault();
+    cancelBinding();
+    Module.lainResumeAudio();
+    if (document.activeElement !== canvas) canvas.focus({ preventScroll: true });
+    setGameInputActive(true);
+    if (event.pointerType === 'mouse') requestGamePointerLock();
+  }, { passive: false });
+  canvas.addEventListener('wheel', event => {
+    if (pointerIsLocked()) event.preventDefault();
+  }, { passive: false });
+  canvas.addEventListener('focus', () => setGameInputActive(true));
+  canvas.addEventListener('blur', () => releaseGameInput());
+  $('settings-panel').addEventListener('focusin', () => releaseGameInput());
+  window.addEventListener('blur', () => releaseGameInput());
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) releaseGameInput();
+  });
+  document.addEventListener('fullscreenchange', () => {
+    if (!ownsFullscreen()) releaseGameInput();
+    updateCaptureUI();
+  });
+
+  function captureGameKey(event) {
+    if (bindingIndex !== null && event.type === 'keydown') {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (event.repeat) return;
+      if (event.code === 'Escape') {
+        const index = bindingIndex;
+        suppressBindingCode = event.code;
+        bindingIndex = null;
+        renderKeyBindings();
+        $('key-grid').querySelector(`[data-binding="${index}"]`).focus({ preventScroll: true });
+        return;
+      }
+      const scancode = codeToScancode[event.code];
+      if (scancode === undefined) {
+        setStatus('binding.unsupported', { code: event.code });
+        return;
+      }
+      const index = bindingIndex;
+      appSettings.keys[index] = scancode;
+      suppressBindingCode = event.code;
+      bindingIndex = null;
+      renderKeyBindings();
+      $('key-grid').querySelector(`[data-binding="${index}"]`).focus({ preventScroll: true });
+      setSettingState('settings.unsaved');
+      return;
+    }
+    if (suppressBindingCode === event.code) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (event.type === 'keyup') suppressBindingCode = null;
+      return;
+    }
+    if (event.code === 'Escape' && (pointerIsLocked() || pointerRequestPending || keyboardLocked || inputActive || ownsFullscreen())) {
+      // Do not preventDefault: preserve the browser's Pointer Lock / fullscreen exit action.
+      event.stopImmediatePropagation();
+      if (event.type === 'keydown') releaseGameInput();
+      return;
+    }
+    if (!gameStarted) return;
+    const gameHasFocus = document.activeElement === canvas || pointerIsLocked();
+    if (gameHasFocus && (pointerIsLocked() || appSettings.preventBrowserKeys) && event.cancelable)
+      event.preventDefault();
+  }
+  window.addEventListener('keydown', captureGameKey, { capture: true, passive: false });
+  window.addEventListener('keyup', captureGameKey, { capture: true, passive: false });
+
+  syncSettingsUI();
+  try {
+    const savedUI = JSON.parse(localStorage.getItem(UI_KEY));
+    setSettingsVisible(savedUI?.settingsHidden === false, false, false);
+  } catch { setSettingsVisible(false, false, false); }
+  function applyLanguage(value, remember = true) {
+    language = ['en', 'ja', 'ko'].includes(value) ? value : 'en';
+    document.documentElement.lang = language;
+    $('language-select').value = language;
+    if (remember) {
+      try { localStorage.setItem(LANGUAGE_KEY, language); } catch {}
+    }
+    // Update labels without recreating inputs or discarding saves and unapplied settings.
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+      element.textContent = t(element.dataset.i18n);
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(element => {
+      element.setAttribute('aria-label', t(element.dataset.i18nAria));
+    });
+    $('settings-toggle').textContent = t($('settings-panel').hidden ? 'settings.open' : 'settings.hide');
+    $('capture-hint').textContent = t(canvas.requestPointerLock ? 'capture.hint' : 'capture.unsupportedHint');
+    $('status').textContent = messageText(statusMessage);
+    if (settingStateKey) $('setting-state').textContent = t(settingStateKey);
+    renderKeyBindings();
+    updateSaveUI();
+    updateCaptureUI();
+    updateLink();
+    updateClock();
+  }
+  $('language-select').addEventListener('focus', () => {
+    cancelBinding();
+    releaseGameInput();
+  });
+  $('language-select').addEventListener('change', event => applyLanguage(event.target.value));
+
+  window.Module = {
+    canvas: $('canvas'),
+    noInitialRun: true,
+    locateFile(path) {
+      return `${path}?v=__LAIN_BUILD_ID__`;
+    },
+    lainSettings: appSettings,
+    lainConfig: null,
+    lainStatus: setStatus,
+    lainError: localizedError,
+    lainFailure(key, params = {}) {
+      runtimeError = message(key, params);
+      setStatus(runtimeError);
+    },
+    lainLoadFailed(detail) {
+      const errors = {
+        'Game executable not found on the disc image': 'boot.exeMissing',
+        'Read error loading the game executable': 'boot.exeRead',
+        'The game executable on the disc is not valid': 'boot.exeInvalid',
+        'Unexpected executable layout': 'boot.exeLayout'
+      };
+      Module.lainFailure('boot.loadFailed', { detail: Object.hasOwn(errors, detail) ? message(errors[detail]) : detail });
+    },
+    lainSaveStateChanged(info) {
+      saveState = info;
+      updateSaveUI();
+    },
+    lainStarted() {
+      if (runtimeFailed) return;
+      starting = false;
+      gameStarted = true;
+      document.body.classList.remove('game-booting');
+      document.body.classList.add('game-running');
+      updateLink();
+      $('launcher').style.display = 'none';
+      $('canvas-wrap').classList.remove('preparing');
+      $('canvas-wrap').classList.add('visible');
+      $('focus-game').disabled = false;
+      updateSaveUI();
+      updateCaptureUI();
+      if ($('settings-panel').hidden && document.hasFocus()) canvas.focus({ preventScroll: true });
+    },
+    onRuntimeInitialized() {
+      clearTimeout(runtimeStartupTimer);
+      if (runtimeFailed) return;
+      runtimeReady = true;
+      updateSaveUI();
+      updateLink();
+      setStatus(saveState.error || 'boot.ready');
+    },
+    onAbort(reason) {
+      clearTimeout(runtimeStartupTimer);
+      if (runtimeFailed) return;
+      fatalRuntimeStatus = fatalRuntimeStatus || runtimeError || message('boot.abort', { detail: reason });
+      runtimeFailed = true;
+      gameStarted = false;
+      starting = false;
+      releaseGameInput();
+      Module.lainCancelSaveOperations?.();
+      document.body.classList.remove('game-booting', 'game-running');
+      $('focus-game').disabled = true;
+      updateSaveUI();
+      updateLink();
+      setStatus(fatalRuntimeStatus);
+    },
+    onExit(code) {
+      clearTimeout(runtimeStartupTimer);
+      if (runtimeFailed) return;
+      fatalRuntimeStatus = fatalRuntimeStatus || runtimeError || message('boot.exited', { code });
+      runtimeFailed = true;
+      gameStarted = false;
+      starting = false;
+      releaseGameInput();
+      Module.lainCancelSaveOperations?.();
+      $('focus-game').disabled = true;
+      updateSaveUI();
+      updateLink();
+      setStatus(fatalRuntimeStatus);
+    },
+    print: text => console.log(text),
+    printErr: text => console.error(text)
+  };
+  applyLanguage(language, false);
+
+  function failRuntimeStartup(key, params = {}) {
+    if (runtimeReady || runtimeFailed) return;
+    clearTimeout(runtimeStartupTimer);
+    runtimeFailed = true;
+    runtimeError = message(key, params);
+    fatalRuntimeStatus = runtimeError;
+    releaseGameInput();
+    setStatus(fatalRuntimeStatus);
+    updateSaveUI();
+    updateCaptureUI();
+    updateLink();
+  }
+
+  function loadRuntime() {
+    if (!['http:', 'https:'].includes(location.protocol)) {
+      failRuntimeStartup('boot.protocol');
+      return;
+    }
+    // Check before Emscripten creates workers or shared Wasm memory.
+    if (!globalThis.isSecureContext) {
+      failRuntimeStartup('boot.secureContext');
+      return;
+    }
+    if (!globalThis.crossOriginIsolated) {
+      failRuntimeStartup('boot.isolation');
+      return;
+    }
+    if (typeof SharedArrayBuffer === 'undefined' || typeof Atomics === 'undefined' || typeof Worker === 'undefined') {
+      failRuntimeStartup('boot.sharedMemory');
+      return;
+    }
+    try {
+      // Require the same shared-memory capability as the pthread runtime.
+      if (typeof WebAssembly === 'undefined' || typeof WebAssembly.instantiate !== 'function' ||
+          !(new WebAssembly.Memory({ initial: 1, maximum: 1, shared: true }).buffer instanceof SharedArrayBuffer)) {
+        failRuntimeStartup('boot.wasmUnsupported');
+        return;
+      }
+    } catch {
+      failRuntimeStartup('boot.wasmUnsupported');
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = $('runtime-template').content.querySelector('script').src;
+    script.async = true;
+    script.onerror = () => failRuntimeStartup('boot.scriptFailed', { url: script.src });
+    window.addEventListener('error', event => {
+      if (event.error || event.message) failRuntimeStartup('boot.startupFailed', { detail: event.error || event.message });
+    });
+    window.addEventListener('unhandledrejection', event => {
+      failRuntimeStartup('boot.startupFailed', { detail: event.reason });
+    });
+    runtimeStartupTimer = setTimeout(() => failRuntimeStartup('boot.startupTimeout'), 60000);
+    document.body.appendChild(script);
+  }
+</script>
+<template id="runtime-template">{{{ SCRIPT }}}</template>
+<script>loadRuntime();</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+PSn00bSDK-derived GPU font support
+=================================
+
+Upstream credit, preserved from the GPU library readme:
+PSX GPU library, part of PSn00bSDK
+2019 Lameguy64 / Meido-Tek Productions
+Licensed under Mozilla Public License
+
+Upstream source revision:
+https://github.com/Lameguy64/PSn00bSDK/tree/619fa016bbc4ddd8d4a670cf3f8aa63617473b2f/libpsn00b/psxgpu
+
+License at that revision:
+https://github.com/Lameguy64/PSn00bSDK/blob/619fa016bbc4ddd8d4a670cf3f8aa63617473b2f/LICENSE.md
+The complete Mozilla Public License 2.0 is included as MPL-2.0.txt.
+
+Covered files in this source distribution:
+- port/psx/src/gpu/font.h
+- port/psx/src/psx/LIBGPU.C
+
+font.h combines the debug font array from dbugfont.c, font-stream definitions
+from font.c, and TIM parsing from gettimimage.c. LIBGPU.C contains adapted
+FntLoad, FntPrint, FntOpen and FntFlush routines from font.c alongside existing
+PsyCross/TOMB5/Lain GPU code. These combined files are provided under MPL-2.0
+as modifications within its file-level scope. They are not offered under an
+MPL-or-MIT choice. The original MIT notices for pre-existing MIT portions are
+retained in LICENSE, port/psx/LICENSE and thirdparty/TOMB5-LICENSE.txt at the
+source-tree root.
+
+Changes inherited through PsyCross and the Lain port include host pointer/type
+adaptation, RECT16/TIM field naming, stream handling, drawing synchronization,
+GPU integration, and Lain display handling. This license correction adds
+notices without changing the executable statements or font bytes.
+
+For every Web build, build_web.py copies the exact covered source files into
+sources/port/psx/src/ beneath the distributed Web directory, together with the
+applicable licenses. The included README and browser footer identify how to
+obtain them. No login, payment, or ROM is needed to retrieve these sources.
+Keep sources/ and thirdparty/ with the JS/Wasm files when redistributing or
+hosting a build. A link to an unmodified upstream revision is not a substitute
+for the actual corresponding modified source.
+
+The 2112-byte dbugfont TIM is also emitted from the array as
+sources/port/psx/src/gpu/dbugfont.tim for editing. Its source of origin before
+PSn00bSDK has not been independently established; these notices do not grant
+rights that upstream contributors did not hold.

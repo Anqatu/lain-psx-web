@@ -1,0 +1,6 @@
+{
+  "roms": {
+    "disc1": "./rom/disc1.bin",
+    "disc2": "./rom/disc2.bin"
+  }
+}

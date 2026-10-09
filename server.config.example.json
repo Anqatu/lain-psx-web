@@ -1,0 +1,10 @@
+{
+  "host": "127.0.0.1",
+  "port": 8000,
+  "roms": {
+    "disc1": "rom/disk1.bin",
+    "disc2": "rom/disk2.bin"
+  },
+  "tls": null,
+  "public_url": null
+}

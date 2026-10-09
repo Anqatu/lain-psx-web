@@ -1,0 +1,616 @@
+{
+  "description": "SHA-256 hashes of the source snapshot immediately after copying. See README.md for subsequent Web-only packaging changes.",
+  "upstream": "https://github.com/Y0oshi/lain-psx-decompiled",
+  "upstream_commit": null,
+  "source_aliases": {
+    "upstream/": "Local source snapshot containing Y0oshi's upstream code and local browser-port changes; not an assertion that all files are unmodified upstream releases.",
+    "emscripten-6.0.11/": "License materials retained from the local Emscripten 6.0.11 SDK, not the SDK implementation."
+  },
+  "psy_cross_commit": "e56e4cde1c2b8a15e0d4e38b26cdd9202e0d17e6",
+  "files": {
+    "LICENSE": {
+      "source": "upstream/LICENSE",
+      "sha256": "e6d1ec3d4a063ddd80f329d4e16a65d43167f19f74b8d78f7bd26a1e50c9f6e8"
+    },
+    "port/client/iso.c": {
+      "source": "upstream/port/client/iso.c",
+      "sha256": "58d1bd9e4a7dfd20d870f3c5e524f017d4ef823547de95889296c1402b8eafdc"
+    },
+    "port/client/iso.h": {
+      "source": "upstream/port/client/iso.h",
+      "sha256": "81fd9671f3f338bf243a3f65ea0a95c0fa5abc6b899bbce97ccff1c45c17db3e"
+    },
+    "port/client/psx_mem.c": {
+      "source": "upstream/port/client/psx_mem.c",
+      "sha256": "7eb2a2f20153295c4fe0d1667a154625080d06bd602c10f118e1d20252a2a34e"
+    },
+    "port/client/psx_mem.h": {
+      "source": "upstream/port/client/psx_mem.h",
+      "sha256": "3a98a4fb005f319685ca6c17c4fa3686f44afb434c941ca4973243f8e23c1143"
+    },
+    "port/compat/malloc.h": {
+      "source": "upstream/port/compat/malloc.h",
+      "sha256": "40732409423dc185b42aadd66f0e718aa3660fe9f557e14bc2eb0a1e740f4553"
+    },
+    "port/game/80013138.c": {
+      "source": "upstream/port/game/80013138.c",
+      "sha256": "4ecdef62c01f82e8a8fead470c05b7ac314e642c4305681c65d73c474cca9f62"
+    },
+    "port/game/80018A38.c": {
+      "source": "upstream/port/game/80018A38.c",
+      "sha256": "0aab276b8f51ec1deb70d0bdfa9096105188dcf5791ab83e6b4b656e50765aa8"
+    },
+    "port/game/80018F48.c": {
+      "source": "upstream/port/game/80018F48.c",
+      "sha256": "321041b1cfca593d73a6cdd3c8f42df80dd4b41dfa5e341fc70182507fba44c5"
+    },
+    "port/game/8001D114.c": {
+      "source": "upstream/port/game/8001D114.c",
+      "sha256": "9fa2932abd45444300d7d08c6d151299514846590513b1f10ea7dd4071fe4487"
+    },
+    "port/game/800220CC.c": {
+      "source": "upstream/port/game/800220CC.c",
+      "sha256": "d237c7f808d12910314c939ec802687e041e5fa300aaa4def80df06086a8fc5a"
+    },
+    "port/game/80023468.c": {
+      "source": "upstream/port/game/80023468.c",
+      "sha256": "4345b7d0ca28bae4ed6989985c9a9452946f61ec15ee14768a039e266d102407"
+    },
+    "port/game/800281A8.c": {
+      "source": "upstream/port/game/800281A8.c",
+      "sha256": "679f94524322fd32d2848b797f0b77be0acc4fe646e5cf845bbdd6bf3c93a013"
+    },
+    "port/game/80029610.c": {
+      "source": "upstream/port/game/80029610.c",
+      "sha256": "127b52fe1cb21f3af11d6949e8547a73421e560057f9126dae59962fcf515fcd"
+    },
+    "port/game/8002A344.c": {
+      "source": "upstream/port/game/8002A344.c",
+      "sha256": "fc81ee3328d817bc09b4ff0b41b4b3fcac857bf183de4bae56f82396a96ff418"
+    },
+    "port/game/8002F4DC.c": {
+      "source": "upstream/port/game/8002F4DC.c",
+      "sha256": "83a7c372d04b42d2ee6a8bf4f400b14471ff7d8ec40b3ffd749dde14dc87caa1"
+    },
+    "port/game/80031378.c": {
+      "source": "upstream/port/game/80031378.c",
+      "sha256": "b5c63ce2a966c617a223eb805731e63bba97cfcbed511c7e44a5a3768aa72ba3"
+    },
+    "port/game/80033820.c": {
+      "source": "upstream/port/game/80033820.c",
+      "sha256": "44c072107823c575c5d698ff1d5f25855b591ad17fd5f6614f63609fa6933b5c"
+    },
+    "port/game/800379C8.c": {
+      "source": "upstream/port/game/800379C8.c",
+      "sha256": "73678c7840377d71423c64e15f6124437d320a5a124539a6b0c1c2cbef66a6f1"
+    },
+    "port/game/80039734.c": {
+      "source": "upstream/port/game/80039734.c",
+      "sha256": "664b227c8b185b81c67d4ec937b95381386978b6a58f45e04ced596577324baf"
+    },
+    "port/game/8003C084.c": {
+      "source": "upstream/port/game/8003C084.c",
+      "sha256": "d0249105be7169d92145c9ae02cf16080c40fe80657bc73aa6d9f6ca607f4542"
+    },
+    "port/game/8003CB08.c": {
+      "source": "upstream/port/game/8003CB08.c",
+      "sha256": "1d575391586bb8e222cd26cb2830da57bb417438df4a667ae77ad67c661ea87b"
+    },
+    "port/game/8003D1B4.c": {
+      "source": "upstream/port/game/8003D1B4.c",
+      "sha256": "694dfba6ec8c87bcddbd0db37f0fc2a431fadcfd90337be2e47d197b98e453ae"
+    },
+    "port/game/8003D6A8.c": {
+      "source": "upstream/port/game/8003D6A8.c",
+      "sha256": "c5b5996f4cf64c6b84b6af7e780ac58b7a16f3a0f7ee682f54e6e1d3f4acbae9"
+    },
+    "port/game/FORKED_FROM.txt": {
+      "source": "upstream/port/game/FORKED_FROM.txt",
+      "sha256": "f0478f049dd05cfa65a2ed9c5d71512e072c4d2f9bacfc329c2dc9fe2a8a259c"
+    },
+    "port/game/PORT_TYPES.md": {
+      "source": "upstream/port/game/PORT_TYPES.md",
+      "sha256": "db823e794440d4887abfefecc87b0ffbbc0663338ff1932bfa0091cadc34c0f9"
+    },
+    "port/game/generated/psx_arena_web.c": {
+      "source": "upstream/port/game/generated/psx_arena_web.c",
+      "sha256": "034a10009a9217e4e26d7627c3b7869d71e206b431497e5ebfc7beb16aa584b3"
+    },
+    "port/game/generated/symbols.txt": {
+      "source": "upstream/port/game/generated/symbols.txt",
+      "sha256": "2b3727dd858a0b1636ab6e2b0bf003bd462d24c74f78b10ae57d871cddf192db"
+    },
+    "port/game/include/common.h": {
+      "source": "upstream/port/game/include/common.h",
+      "sha256": "f567953da78a6ef8ceae9edd9b62a15649d784f5738904ac956e339b3e91f7d5"
+    },
+    "port/game/include/game_hooks.h": {
+      "source": "upstream/port/game/include/game_hooks.h",
+      "sha256": "cf18ee522e177c4d23c5b34b679fe0dfe6591380cc12a9e027618ca298827801"
+    },
+    "port/game/include/game_protos.h": {
+      "source": "upstream/port/game/include/game_protos.h",
+      "sha256": "f602c0d27dab7bbc6d906bb46887ab869c93206f89556994a820184d21365c8a"
+    },
+    "port/game/include/lain_vlc.h": {
+      "source": "upstream/port/game/include/lain_vlc.h",
+      "sha256": "1d4352940ef47f0d10af71e227ad15061b09e6bd2e2575a51e57eb82649214a6"
+    },
+    "port/game/include/port_hw.h": {
+      "source": "upstream/port/game/include/port_hw.h",
+      "sha256": "49ea519a42deb230854224019609cbb0de34910c148de0c25307a9e5d041f92f"
+    },
+    "port/game/include/psx_arena.h": {
+      "source": "upstream/port/game/include/psx_arena.h",
+      "sha256": "44c1c57a2a699914fe5f7d3ca729fbda1168a054d24bd05b9de309d6154ac019"
+    },
+    "port/game/include/psx_sdk.h": {
+      "source": "upstream/port/game/include/psx_sdk.h",
+      "sha256": "88ca6535bd021ceba64f7aeb19e8ff7afe509f532f19b30372e53cd20656edb6"
+    },
+    "port/game/include/types.h": {
+      "source": "upstream/port/game/include/types.h",
+      "sha256": "8b97806785605cbed68bee86e0bfc08ff4d7bab18d47c5036dc1070b8f3f70f7"
+    },
+    "port/game/port_data.c": {
+      "source": "upstream/port/game/port_data.c",
+      "sha256": "f931660575caa8a708cb83a7c693924f930ade0b0da7ed5ab88c125a6c725eb2"
+    },
+    "port/game/port_libc.c": {
+      "source": "upstream/port/game/port_libc.c",
+      "sha256": "81d0a33d49c3b7ef8623f413ea013876bad72157b0d45372922e9435458a6a4b"
+    },
+    "port/game/port_vlc.c": {
+      "source": "upstream/port/game/port_vlc.c",
+      "sha256": "b7582e42f2b74b5fd6f0862f61b70565f6344079be220dfc8a1904fa486dc0de"
+    },
+    "port/game/port_vlc_core.c": {
+      "source": "upstream/port/game/port_vlc_core.c",
+      "sha256": "b08b004af4908c000c7d0513846510b4649b8b7e6f499bc99ddcb60569fe5330"
+    },
+    "port/psx/LICENSE": {
+      "source": "upstream/port/psx/LICENSE",
+      "sha256": "fa03bfe5810413a38d363e003472bd9e7b36384ac5f82ad8d7c902fd83b51539"
+    },
+    "port/psx/UPSTREAM.txt": {
+      "source": "upstream/port/psx/UPSTREAM.txt",
+      "sha256": "a4ecc5bd225e89be5930bab557014df1abb2da13b223d466c54f8c4818f992ce"
+    },
+    "port/psx/include/PsyX/PsyX_config.h": {
+      "source": "upstream/port/psx/include/PsyX/PsyX_config.h",
+      "sha256": "c837d59b11a1c2e68a89f2084e4548d3a682ff0311fae58cc1b981f1fe3b0605"
+    },
+    "port/psx/include/PsyX/PsyX_globals.h": {
+      "source": "upstream/port/psx/include/PsyX/PsyX_globals.h",
+      "sha256": "44d5192854c768da8a045b7bd3e5b85f3ebcde0b990146dc0fb3d73c3e5dd21b"
+    },
+    "port/psx/include/PsyX/PsyX_public.h": {
+      "source": "upstream/port/psx/include/PsyX/PsyX_public.h",
+      "sha256": "e9658201f5bfda05e7f0c631e31ef082145faae6bf38bbbc4effb2426ef21b7d"
+    },
+    "port/psx/include/PsyX/PsyX_render.h": {
+      "source": "upstream/port/psx/include/PsyX/PsyX_render.h",
+      "sha256": "0e225625a546114a266b6b817c6e4fb670f1cdbaf8d43ca8138255c44e07d1d8"
+    },
+    "port/psx/include/PsyX/PsyX_version.h": {
+      "source": "upstream/port/psx/include/PsyX/PsyX_version.h",
+      "sha256": "1ebcd87d4a80c8db4e622c30095719e3df3a4e9ca269e3951f93badfd0e7e811"
+    },
+    "port/psx/include/PsyX/common/pgxp_defs.h": {
+      "source": "upstream/port/psx/include/PsyX/common/pgxp_defs.h",
+      "sha256": "c7bb9e4dc02defbc5e150bdaa8c94aa427484fc30fcf111a1fe55301f38e34f8"
+    },
+    "port/psx/include/PsyX/util/timer.h": {
+      "source": "upstream/port/psx/include/PsyX/util/timer.h",
+      "sha256": "a389eb650f687b768088750e491bfd82d1ebce7526df97ea40b7753b9a6c8939"
+    },
+    "port/psx/include/lain_hd.h": {
+      "source": "upstream/port/psx/include/lain_hd.h",
+      "sha256": "7183eabf1afc4cfb597e7947c60f8b102b22146fe84ebcc18294bb41ff2a2e22"
+    },
+    "port/psx/include/lain_xa.h": {
+      "source": "upstream/port/psx/include/lain_xa.h",
+      "sha256": "b027dfd93f52157eeead49a1dbb08a98b1f1ca5c9b2ffdd0df9a1acefa826ba0"
+    },
+    "port/psx/include/psx/abs.h": {
+      "source": "upstream/port/psx/include/psx/abs.h",
+      "sha256": "4f2f4b8fb715415751b2227c5079288d73a5ef0edc6b06096a8272a48f40226c"
+    },
+    "port/psx/include/psx/asm.h": {
+      "source": "upstream/port/psx/include/psx/asm.h",
+      "sha256": "909db9309b3acbe5992b551d9ed1adcb26bd76792b1c2a996bc6c2d29776c61b"
+    },
+    "port/psx/include/psx/gtemac.h": {
+      "source": "upstream/port/psx/include/psx/gtemac.h",
+      "sha256": "80317aed820dcf15af477ce9fccef0fe10c014bd667db27a103ef76feec2bb1e"
+    },
+    "port/psx/include/psx/gtereg.h": {
+      "source": "upstream/port/psx/include/psx/gtereg.h",
+      "sha256": "2d5cecc591d46cc569d8aafa06e705f57a8f0004dc13a49eeb0916841a1dd04a"
+    },
+    "port/psx/include/psx/inline_c.h": {
+      "source": "upstream/port/psx/include/psx/inline_c.h",
+      "sha256": "5bd7b9adf00e09ea80d2660a98bfb0530fe1aceddd86b5401d15535869d7a866"
+    },
+    "port/psx/include/psx/kernel.h": {
+      "source": "upstream/port/psx/include/psx/kernel.h",
+      "sha256": "d9ab06a5f7a3e196b5db01671ca3c6c477ff93980da1d4cbdcb6f61000a57704"
+    },
+    "port/psx/include/psx/libapi.h": {
+      "source": "upstream/port/psx/include/psx/libapi.h",
+      "sha256": "595f1983f1872c711f3633e44425a56a164617a4b975a84e670732c6c9a32a93"
+    },
+    "port/psx/include/psx/libcd.h": {
+      "source": "upstream/port/psx/include/psx/libcd.h",
+      "sha256": "5363cbe8d21ad7eed041abffcf5c6c602b0cdfb6de75ef6b3cb44fbc5cc03535"
+    },
+    "port/psx/include/psx/libetc.h": {
+      "source": "upstream/port/psx/include/psx/libetc.h",
+      "sha256": "e2363848117eac0b3cf7b4bf57c1d45d94b3fee11166b99173c403a394e73e48"
+    },
+    "port/psx/include/psx/libgpu.h": {
+      "source": "upstream/port/psx/include/psx/libgpu.h",
+      "sha256": "f8884234bef15d32c6b26b2b5df46085fde04fc8ff221820f2d773245c1a37c5"
+    },
+    "port/psx/include/psx/libgs.h": {
+      "source": "upstream/port/psx/include/psx/libgs.h",
+      "sha256": "0cdf2730f81fa4302572ec8d60591e91db1818b4d0e18c3b07e5ef72dcf8d460"
+    },
+    "port/psx/include/psx/libgte.h": {
+      "source": "upstream/port/psx/include/psx/libgte.h",
+      "sha256": "c27b928533938f1f5b8ebdd8c34fa3fbc413978df98dd909facdc09cf3e9c33f"
+    },
+    "port/psx/include/psx/libmath.h": {
+      "source": "upstream/port/psx/include/psx/libmath.h",
+      "sha256": "cc6ad7002913b1706bde6c1e7ffade051255d32d0b3f25f65d81e17c37481d13"
+    },
+    "port/psx/include/psx/libmcrd.h": {
+      "source": "upstream/port/psx/include/psx/libmcrd.h",
+      "sha256": "4612f3f89cfc66b5c3fedbaea4726c296714220e4c65827bb4a22634843f4ab9"
+    },
+    "port/psx/include/psx/libpad.h": {
+      "source": "upstream/port/psx/include/psx/libpad.h",
+      "sha256": "0f7a40407f55da8a236e24a5064395731c768956f3ccbc3df2f056bdb8c7d06d"
+    },
+    "port/psx/include/psx/libpress.h": {
+      "source": "upstream/port/psx/include/psx/libpress.h",
+      "sha256": "bbe8e08ea990f8b34f85f2749fc2db5c8096911429e1cce8d7f8c02962107ced"
+    },
+    "port/psx/include/psx/libsn.h": {
+      "source": "upstream/port/psx/include/psx/libsn.h",
+      "sha256": "698f259e283e535e1954d91f8846e132d42034c8bd02631f429b71b63bf644fc"
+    },
+    "port/psx/include/psx/libsnd.h": {
+      "source": "upstream/port/psx/include/psx/libsnd.h",
+      "sha256": "c6e50846d513c6cc2eb31d2f55f1d76b3f8b0db6d00cef838b7781e4d9297731"
+    },
+    "port/psx/include/psx/libspu.h": {
+      "source": "upstream/port/psx/include/psx/libspu.h",
+      "sha256": "d878cbae57be711b53c22e58b59cee0cb128f47fd7128ade0c9fcbe38f4c172d"
+    },
+    "port/psx/include/psx/r3000.h": {
+      "source": "upstream/port/psx/include/psx/r3000.h",
+      "sha256": "f63b7f8f7e06f16b0fe409d23bddec8a9f9341a44d9747bda9c5725537a39290"
+    },
+    "port/psx/include/psx/rand.h": {
+      "source": "upstream/port/psx/include/psx/rand.h",
+      "sha256": "a81264d45ff5ccdd717268c8dc4ae6538b57cad9cbf4b8752450222902a9af64"
+    },
+    "port/psx/include/psx/strings.h": {
+      "source": "upstream/port/psx/include/psx/strings.h",
+      "sha256": "a7c21401219dcce38aaa596d12cab82783a4083134c5b8a5e71c43edc694e759"
+    },
+    "port/psx/include/psx/types.h": {
+      "source": "upstream/port/psx/include/psx/types.h",
+      "sha256": "3ae82846de9341626fabe5f23af4a17a76117511777c5fab68fff39ed4832474"
+    },
+    "port/psx/src/PsyX_main.cpp": {
+      "source": "upstream/port/psx/src/PsyX_main.cpp",
+      "sha256": "fe16314caae5256170110271b8b6951ba7f30e4458c09faa18b34eb5742783b2"
+    },
+    "port/psx/src/PsyX_main.h": {
+      "source": "upstream/port/psx/src/PsyX_main.h",
+      "sha256": "95cc62ccd94d79c09854a6e185d7666db822735c72dacfa618e85bb6fda5f3bb"
+    },
+    "port/psx/src/gpu/PsyX_GPU.cpp": {
+      "source": "upstream/port/psx/src/gpu/PsyX_GPU.cpp",
+      "sha256": "6fc884de89ec1cde4f6ca57eda90f7d0ffa7be97a5bb7e2737a3b88f31accb10"
+    },
+    "port/psx/src/gpu/PsyX_GPU.h": {
+      "source": "upstream/port/psx/src/gpu/PsyX_GPU.h",
+      "sha256": "0172a102d58e5eed143ed2d3a86e83628370ffa1cf2a7d1c26a4f6cc952b1fc2"
+    },
+    "port/psx/src/gpu/font.h": {
+      "source": "upstream/port/psx/src/gpu/font.h",
+      "sha256": "1342c05ea31e460a576ab9d53e4f5180dc8c18053b3b998d17fa63f56898007d"
+    },
+    "port/psx/src/gte/PsyX_GTE.cpp": {
+      "source": "upstream/port/psx/src/gte/PsyX_GTE.cpp",
+      "sha256": "3e7b3f5c1fbd453b1a7281824cb9422de5c82e9f7d35648e850bd43b7578b3da"
+    },
+    "port/psx/src/gte/PsyX_GTE.h": {
+      "source": "upstream/port/psx/src/gte/PsyX_GTE.h",
+      "sha256": "94b7e2d9f15332a8745186af63a5b5cec2d6e20e680586c5e33d31780d55286a"
+    },
+    "port/psx/src/gte/ratan_tbl.h": {
+      "source": "upstream/port/psx/src/gte/ratan_tbl.h",
+      "sha256": "80db6b99e58a0d64bd3f1b132a14c5c7d17e937a456e9f5436e6c837afec3fd4"
+    },
+    "port/psx/src/gte/rcossin_tbl.h": {
+      "source": "upstream/port/psx/src/gte/rcossin_tbl.h",
+      "sha256": "ad6efefccfc07435ad6d4a04e085bf89c4b03a52f129efe1e141907d7a565546"
+    },
+    "port/psx/src/gte/sqrt_tbl.h": {
+      "source": "upstream/port/psx/src/gte/sqrt_tbl.h",
+      "sha256": "8d1677c326606789a7b85dac99ce27e6b0a1bc69351cf0e2120674f35879087c"
+    },
+    "port/psx/src/iso9660.h": {
+      "source": "upstream/port/psx/src/iso9660.h",
+      "sha256": "74c429f1e3c5bbffe7e69c48f321644b76266954305776034bb4a224168002b2"
+    },
+    "port/psx/src/lain_gs/gs_2d.c": {
+      "source": "upstream/port/psx/src/lain_gs/gs_2d.c",
+      "sha256": "a3f01d288d20bded7dd385a5fb8082e9019a1160062751da67015e3bd234f483"
+    },
+    "port/psx/src/lain_gs/gs_coord.c": {
+      "source": "upstream/port/psx/src/lain_gs/gs_coord.c",
+      "sha256": "df9111c954d976a4993abeee6a57013e66bcd418a76ae94d34b120fb4fa9a7cb"
+    },
+    "port/psx/src/lain_gs/gs_core.c": {
+      "source": "upstream/port/psx/src/lain_gs/gs_core.c",
+      "sha256": "42bbd97dd9cc50983bd87ccba4b72032d367fb7a288fc4791fe2eba153157245"
+    },
+    "port/psx/src/lain_gs/gs_internal.h": {
+      "source": "upstream/port/psx/src/lain_gs/gs_internal.h",
+      "sha256": "c133adfd53728caf06aa0e811b370e39fe2e9a46a8522747e05eafccc22db69a"
+    },
+    "port/psx/src/lain_gs/gs_tmd.c": {
+      "source": "upstream/port/psx/src/lain_gs/gs_tmd.c",
+      "sha256": "c5d7afe4d95a3299234f24d38d9f34f844a724c7d8c7d580e744ec86c9d154b5"
+    },
+    "port/psx/src/lain_hd/lain_hd.cpp": {
+      "source": "upstream/port/psx/src/lain_hd/lain_hd.cpp",
+      "sha256": "6564f84ed85ca29ee4959a2e2d80e472f55dec6eaafda20c8690db582bf50dd8"
+    },
+    "port/psx/src/lain_mcrd/lain_mcrd.c": {
+      "source": "upstream/port/psx/src/lain_mcrd/lain_mcrd.c",
+      "sha256": "586fdfd7836896c80c401d2745d05e648b23e42b1ce146533cf20e8b14a11974"
+    },
+    "port/psx/src/lain_press/lain_mdec.c": {
+      "source": "upstream/port/psx/src/lain_press/lain_mdec.c",
+      "sha256": "e1162dccc5174cad3ce7e284f3e32311c89dfd8c61e25dea90a5fde1ce9d3315"
+    },
+    "port/psx/src/lain_press/lain_stream.c": {
+      "source": "upstream/port/psx/src/lain_press/lain_stream.c",
+      "sha256": "b92caf743d5f304e2f02614fbe5ab37950d5230545f0c27a76e3290ba804a74d"
+    },
+    "port/psx/src/lain_snd/encspu.c": {
+      "source": "upstream/port/psx/src/lain_snd/encspu.c",
+      "sha256": "f6c4526ad21420561c53b3bcbc434d2db0da553f55319840298a39e93b0bc4ef"
+    },
+    "port/psx/src/lain_snd/snd_internal.h": {
+      "source": "upstream/port/psx/src/lain_snd/snd_internal.h",
+      "sha256": "ed4f502c1fccb85686aaad7f4d1b190913de3896ebd6e4ff70290f8b2716a43d"
+    },
+    "port/psx/src/lain_snd/snd_seq.c": {
+      "source": "upstream/port/psx/src/lain_snd/snd_seq.c",
+      "sha256": "42327e3e4049688167628102bed1f3b90ff59b54050f652877691099c95b455e"
+    },
+    "port/psx/src/lain_snd/snd_vab.c": {
+      "source": "upstream/port/psx/src/lain_snd/snd_vab.c",
+      "sha256": "00dccddb259f688e592ae91bf311b82df62e4a7a2486e89a97fda6965e0f6ca3"
+    },
+    "port/psx/src/lain_snd/snd_voice.c": {
+      "source": "upstream/port/psx/src/lain_snd/snd_voice.c",
+      "sha256": "fcc54a65a7e44d6a33705b10dbeacf9d7362f7d7bbcd839d980544094d8d795c"
+    },
+    "port/psx/src/lain_snd/spu_api.c": {
+      "source": "upstream/port/psx/src/lain_snd/spu_api.c",
+      "sha256": "f85115745578f2ffd64b0d3c25270a41e8f021b0d0ac2008be04ce63959e570b"
+    },
+    "port/psx/src/lain_snd/spu_core.c": {
+      "source": "upstream/port/psx/src/lain_snd/spu_core.c",
+      "sha256": "f95dae7bc009788bff124bdd7f868239a3742b9db131f537a90eed83c47b00f0"
+    },
+    "port/psx/src/lain_snd/spu_internal.h": {
+      "source": "upstream/port/psx/src/lain_snd/spu_internal.h",
+      "sha256": "e89027e65cebf937a5c98de734f1c4d364c0b2a47d1a4b1613cd3e840011642c"
+    },
+    "port/psx/src/lain_xa/cd_drive.c": {
+      "source": "upstream/port/psx/src/lain_xa/cd_drive.c",
+      "sha256": "14fa88aa7f2139ec87f99c04a5174ec62b78492aa1b6f05ab120f69c2997bfa0"
+    },
+    "port/psx/src/lain_xa/lain_xa_internal.h": {
+      "source": "upstream/port/psx/src/lain_xa/lain_xa_internal.h",
+      "sha256": "3370fa2731545b4f43e4872baddaca00b02a9be5efdbd2cccebdc63ec28cea71"
+    },
+    "port/psx/src/lain_xa/xa_adpcm.c": {
+      "source": "upstream/port/psx/src/lain_xa/xa_adpcm.c",
+      "sha256": "acaedb21e71f3cfcfb2db2e7008f69358ff4be67e6dde5ded9c319124f467882"
+    },
+    "port/psx/src/lain_xa/xa_out.c": {
+      "source": "upstream/port/psx/src/lain_xa/xa_out.c",
+      "sha256": "85b67cff4f97fbdefb36d36f90560c93689b4cb1575799203f131ddf9539123a"
+    },
+    "port/psx/src/pad/PsyX_pad.cpp": {
+      "source": "upstream/port/psx/src/pad/PsyX_pad.cpp",
+      "sha256": "f73b295682e430c7a550847bd4fa11a7b69afa69095aca1434ea69188a518d75"
+    },
+    "port/psx/src/pad/PsyX_pad.h": {
+      "source": "upstream/port/psx/src/pad/PsyX_pad.h",
+      "sha256": "266bfac2fc92f5e7d34b3a826ecedf5d683cd69ccba66e7394bbd939825de1d8"
+    },
+    "port/psx/src/platform.h": {
+      "source": "upstream/port/psx/src/platform.h",
+      "sha256": "f0366e11bf422ba523c994cc0dfe6276d57ef3151a92f7e7e353710d4f5fb5d4"
+    },
+    "port/psx/src/psx/ABS.C": {
+      "source": "upstream/port/psx/src/psx/ABS.C",
+      "sha256": "8f5127a1a57c8dbf3f3c62b35a5885296e35012d97ff0390d51c8dbb084b895e"
+    },
+    "port/psx/src/psx/INLINE_C.C": {
+      "source": "upstream/port/psx/src/psx/INLINE_C.C",
+      "sha256": "88a78e1bb3b222461ddd969d6b0406363dadfadfbd9c30547a3e2e9c7980c9d2"
+    },
+    "port/psx/src/psx/LIBAPI.C": {
+      "source": "upstream/port/psx/src/psx/LIBAPI.C",
+      "sha256": "dc7c76f12c509965711454cd52d019d6c03991d25ce997d3a27edb1a3058930b"
+    },
+    "port/psx/src/psx/LIBCD.C": {
+      "source": "upstream/port/psx/src/psx/LIBCD.C",
+      "sha256": "f18effb891a9db65d3a3f481d3cff57455036b02a153f846831fda1c7ffc5a38"
+    },
+    "port/psx/src/psx/LIBETC.C": {
+      "source": "upstream/port/psx/src/psx/LIBETC.C",
+      "sha256": "f068407a31b42d92b2b3f55fde60ff6241647978071c9751f37eb7a046d80504"
+    },
+    "port/psx/src/psx/LIBGPU.C": {
+      "source": "upstream/port/psx/src/psx/LIBGPU.C",
+      "sha256": "3ac7d233c6dacc57f8058aea3298de7178092c22bd572990f170ef12ad21ae7f"
+    },
+    "port/psx/src/psx/LIBGTE.C": {
+      "source": "upstream/port/psx/src/psx/LIBGTE.C",
+      "sha256": "736f77ed9b1d46c5c89c6a80db878e41d3905c0e7cce4e42b0dd1b2cd9c22eef"
+    },
+    "port/psx/src/psx/LIBPAD.C": {
+      "source": "upstream/port/psx/src/psx/LIBPAD.C",
+      "sha256": "1880edb7b7379bef24ae655bc9309c457ec4acebfec7120e76e13464eeb01c8f"
+    },
+    "port/psx/src/psx/LIBSN.C": {
+      "source": "upstream/port/psx/src/psx/LIBSN.C",
+      "sha256": "4d365a3a92d0dffb5f66456b84f7a285d8f8799437470518ab377322716c3874"
+    },
+    "port/psx/src/render/PsyX_render.cpp": {
+      "source": "upstream/port/psx/src/render/PsyX_render.cpp",
+      "sha256": "c24a1bdc097b9f63f1d8c1cc5bbc086e6f72ae5a30f92b0bf22e213118d5d99a"
+    },
+    "port/psx/src/util/crash_handler.cpp": {
+      "source": "upstream/port/psx/src/util/crash_handler.cpp",
+      "sha256": "d890cd34d6f386fe6887eba5caf574faad206e45488191d28b5925aebbfd4108"
+    },
+    "port/psx/src/util/crash_handler.h": {
+      "source": "upstream/port/psx/src/util/crash_handler.h",
+      "sha256": "035ee9922bbda7c514f259c6ffde33e1a89308b9ab6ddc51a90afd824efb3761"
+    },
+    "port/psx/src/util/timer.c": {
+      "source": "upstream/port/psx/src/util/timer.c",
+      "sha256": "120491c723a694ee15ed670be4e613d0d46fe05cf2de796b24507036195db8e5"
+    },
+    "port/src/platform.c": {
+      "source": "upstream/port/src/platform.c",
+      "sha256": "8c0124f3a7ceab2587bdece1dfce5913b111e76c8239a7196d6a3a091bd8db0b"
+    },
+    "port/src/sdk_extra.c": {
+      "source": "upstream/port/src/sdk_extra.c",
+      "sha256": "d389b64df697265553c80ea6815f731f9af298931cade1da312c3056b786c0a4"
+    },
+    "port/src/web_main.c": {
+      "source": "upstream/port/src/web_main.c",
+      "sha256": "5ed9a74a969fddeca14776d6459b898ad55a8ccc0fb406c19587bd5eed932ebc"
+    },
+    "port/tools/gen_hooks.py": {
+      "source": "upstream/port/tools/gen_hooks.py",
+      "sha256": "81515b4912c0719632ea5c00725723d5ee0f168cc8203262b193ba0cfee366c6"
+    },
+    "port/web/build_web.py": {
+      "source": "upstream/port/web/build_web.py",
+      "sha256": "6f8ddaabf04bc1365605d33b9b67327a035ed3ab041bd4550151ad0351451b86"
+    },
+    "port/web/config.json": {
+      "source": "upstream/port/web/config.json",
+      "sha256": "5b2e4929d5e8e2e71552a92d1c736ea2ee7878a8b0557eebe1784fd58d57422d"
+    },
+    "port/web/library.js": {
+      "source": "upstream/port/web/library.js",
+      "sha256": "b279b3495be51657a4d8e2267ab02daaee5d71fef5918c4d5cad3ecb05e7785c"
+    },
+    "port/web/pre.js": {
+      "source": "upstream/port/web/pre.js",
+      "sha256": "d1664d0e1314067871193e7e0d20d01c0a949f050d0bfc0b85ee63d8e0e802a4"
+    },
+    "port/web/run_local.py": {
+      "source": "upstream/port/web/run_local.py",
+      "sha256": "7fb9ec737ae0f7a54c54227636812a329dcc665f86e95d1ca03d5aa8429c7037"
+    },
+    "port/web/serve.py": {
+      "source": "upstream/port/web/serve.py",
+      "sha256": "41b3e64cd87831f91f1ab3e851514d6370343af156700c1a63e5c9271aba1cfe"
+    },
+    "port/web/shell.html": {
+      "source": "upstream/port/web/shell.html",
+      "sha256": "b6e71301ac7b13956fc7bee9d746f771e0914c79f92d07b33a3501bd9327eca0"
+    },
+    "port/web/translations.json": {
+      "source": "upstream/port/web/translations.json",
+      "sha256": "99d9332488bc3f79ff01043b7cfcbdde56b59fbfe8ac52069192a9c17589ee70"
+    },
+    "thirdparty/PsyCross-LICENSE.txt": {
+      "source": "upstream/thirdparty/PsyCross-LICENSE.txt",
+      "sha256": "fa03bfe5810413a38d363e003472bd9e7b36384ac5f82ad8d7c902fd83b51539"
+    },
+    "thirdparty/SDL2-LICENSE.txt": {
+      "source": "upstream/thirdparty/SDL2-LICENSE.txt",
+      "sha256": "97f35b302b361680ec1e891e95d2d52097bb95abff361434916d99dc1305f127"
+    },
+    "thirdparty/Emscripten-LICENSE.txt": {
+      "source": "emscripten-6.0.11/LICENSE",
+      "sha256": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86"
+    },
+    "thirdparty/Emscripten-AUTHORS.txt": {
+      "source": "emscripten-6.0.11/AUTHORS",
+      "sha256": "b865d6074c7f13366cad82990ba58bbe0a3f3eccf5fa47e50aa02693de4e895e"
+    },
+    "thirdparty/musl-COPYRIGHT.txt": {
+      "source": "emscripten-6.0.11/system/lib/libc/musl/COPYRIGHT",
+      "sha256": "b870108ec5e7790e9f9919064f1b9421d62d5f9b0e6c230c6adf7ea2da62e97b"
+    },
+    "thirdparty/compiler-rt-LICENSE.txt": {
+      "source": "emscripten-6.0.11/system/lib/compiler-rt/LICENSE.TXT",
+      "sha256": "1a8f1058753f1ba890de984e48f0242a3a5c29a6a8f2ed9fd813f36985387e8d"
+    },
+    "thirdparty/compiler-rt-CREDITS.txt": {
+      "source": "emscripten-6.0.11/system/lib/compiler-rt/CREDITS.TXT",
+      "sha256": "a9901f47a089da41e4690682d00ce4cedaa2baf41fedbe79beee366d43ac2461"
+    },
+    "thirdparty/libcxx-LICENSE.txt": {
+      "source": "emscripten-6.0.11/system/lib/libcxx/LICENSE.TXT",
+      "sha256": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b"
+    },
+    "thirdparty/libcxx-CREDITS.txt": {
+      "source": "emscripten-6.0.11/system/lib/libcxx/CREDITS.TXT",
+      "sha256": "054e099bf5954c8821b880f5751d2fbf221bf43cf7c57ac1c2c5ff6263d6d9c3"
+    },
+    "thirdparty/libcxxabi-LICENSE.txt": {
+      "source": "emscripten-6.0.11/system/lib/libcxxabi/LICENSE.TXT",
+      "sha256": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c"
+    },
+    "thirdparty/libcxxabi-CREDITS.txt": {
+      "source": "emscripten-6.0.11/system/lib/libcxxabi/CREDITS.TXT",
+      "sha256": "a259fff28a51623f14917dd68f97f3af7804984087ddc1bfd8196d08ebb75b83"
+    },
+    "thirdparty/llvm-libc-LICENSE.txt": {
+      "source": "emscripten-6.0.11/system/lib/llvm-libc/LICENSE.TXT",
+      "sha256": "ebcd9bbf783a73d05c53ba4d586b8d5813dcdf3bbec50265860ccc885e606f47"
+    },
+    "thirdparty/SDL2-yuv2rgb-LICENSE.txt": {
+      "source": "emscripten-6.0.11/cache/ports/sdl2/SDL-release-2.32.10/src/video/yuv2rgb/LICENSE",
+      "sha256": "f7d74004cc75778cae46c5f0139f244d67c07ef64cf51937e8272352197dcb18"
+    },
+    "thirdparty/musl-file-NOTICES.txt": {
+      "source": "emscripten-6.0.11/license-comment-excerpts",
+      "sha256": "51691c1e2e053611eeefea89a5cc2593493a511c2bc9dd6428615308f525929d"
+    },
+    "thirdparty/Emscripten-file-NOTICES.txt": {
+      "source": "emscripten-6.0.11/license-comment-excerpts",
+      "sha256": "86b02814ad339684c2ea99de29de6b7d01457ac322250784a4417fc99f762312"
+    },
+    "thirdparty/libcxx-extra-NOTICES.txt": {
+      "source": "emscripten-6.0.11/license-comment-excerpts",
+      "sha256": "80d899988434eeb80c977e29f7a06adbb4c2b63aef5e16c9ce7e40a1d2a958f7"
+    },
+    "thirdparty/SDL2-extra-NOTICES.txt": {
+      "source": "emscripten-6.0.11/license-comment-excerpts",
+      "sha256": "e50243024f00837f5e1c8bfb648128123267764e2c65ea558c78cb1c9e096243"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+Vendored from https://github.com/OpenDriver2/PsyCross at e56e4cde1c2b8a15e0d4e38b26cdd9202e0d17e6.
+The upstream MIT notice in LICENSE is retained; it is not a blanket license for every included component.
+Local changes inherited from upstream are mainly marked with "lain:" comments.
+See ../../README.md for this Web-only package's changes and credits.
+The original port/PORTING.md is not bundled. Upstream repository:
+https://github.com/Y0oshi/lain-psx-decompiled
+
+Additional notices restored for this distribution:
+- src/gpu/font.h and src/psx/LIBGPU.C contain PSn00bSDK-derived code and are
+  distributed as combined source files under MPL-2.0. See ../../thirdparty/MPL-2.0.txt
+  and ../../thirdparty/PSn00bSDK-NOTICE.txt. Original MIT notices remain in force
+  for the pre-existing MIT portions; this is not an MPL-or-MIT option.
+- src/gte/PsyX_GTE.cpp contains smf's BSD-3-Clause MAME GTE code. See
+  ../../thirdparty/MAME-GTE-LICENSE.txt.
+- TOMB5-derived portions retain Copyright (c) 2017 Gh0stBlade & zdimension.
+  See ../../thirdparty/TOMB5-LICENSE.txt.
+
+These restored notices do not settle the separate provenance questions described in README.md.
